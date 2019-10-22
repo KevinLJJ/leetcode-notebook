@@ -1,6 +1,6 @@
 ![logo](https://while.run/img/avatar.png)
 # Kevin
-> 学校不行，自己也是个垃圾。🏊‍♂️
+> 专业菜鸡，业余划水。🏊‍♂️
 
 [Repository](https://github.com/KevinLJJ/leetcode-notebook)
 [Blog](https://while.run)
