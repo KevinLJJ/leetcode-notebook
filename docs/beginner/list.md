@@ -69,3 +69,121 @@ func maxProfit(prices []int) int {
     return pro
 }
 ```
+
+## 38. 报数
+**给定两个数组，编写一个函数来计算它们的交集。**
+
+[题目地址](https://leetcode-cn.com/problems/intersection-of-two-arrays-ii)
+
+示例 1:
+
+
+```
+输入: nums1 = [1,2,2,1], nums2 = [2,2]
+输出: [2,2]
+```
+示例 2:
+```
+输入: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+输出: [4,9]
+```
+说明：
+
+输出结果中每个元素出现的次数，应与元素在两个数组中出现的次数一致。
+我们可以不考虑输出结果的顺序。
+
+思路：
+使用Map，遍历第一个数组且作为Key，将对应Value+1，遍历第二个数组，将值作为Key，如果Value大于0则说明是在第一个数组中存在的，加入结果集返回。
+```go
+func intersect(nums1 []int, nums2 []int) []int {
+    var result[]int
+    temp := make(map[int]int)
+    for i :=0;i<len(nums1);i++{
+        temp[nums1[i]]++
+    }
+    for j :=0;j<len(nums2);j++{
+        if(temp[nums2[j]]>0){
+        result = append(result,nums2[j])
+        temp[nums2[j]]--
+      }
+    }
+return result
+}
+```
+## 66. 加一
+
+[题目地址](https://leetcode-cn.com/problems/plus-one)
+
+**给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。
+最高位数字存放在数组的首位， 数组中每个元素只存储一个数字。
+你可以假设除了整数 0 之外，这个整数不会以零开头。**
+
+示例 1:
+```
+输入: [1,2,3]
+输出: [1,2,4]
+解释: 输入数组表示数字 123。
+```
+
+示例 2:
+```
+输入: [4,3,2,1]
+输出: [4,3,2,2]
+解释: 输入数组表示数字 4321。
+```
+**思路**：除了直接给最后一位加1的情况外，主要考虑什么时候该进位，进到最后的时候应该考虑追加位数（如999+1=1000），用个循环判断最后一位为9时的次数。
+```go
+func plusOne(digits []int) []int {
+    for i:=len(digits)-1;i>=0;i--{
+        //从后往前检查是否需要进位
+        if digits[i]==9{
+            digits[i]=0
+        }else{
+            //不用进位加一即可
+            digits[i]+=1
+            return digits
+        }
+         //如果进位到首位，则首元素加一位
+        if i==0{
+            digits=append(digits,0)
+            digits[0]+=1
+        }
+    }
+    return digits
+}
+```
+## 136. 只出现一次的数字
+[题目地址](https://leetcode-cn.com/problems/single-number)
+
+**给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。**
+
+说明：
+
+你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
+
+示例 1:
+
+```
+输入: [2,2,1]
+输出: 1
+```
+示例 2:
+```
+>输入: [4,1,2,1,2]
+输出: 4
+```
+
+**思路**：
+开始想了一种比较笨的方法，就是先排序然后再每对每对比较，若有不等，则其一为单一元素。后面看到了异或的解法，甚是巧妙。
+![](https://img-blog.csdnimg.cn/20190725223513564.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70)
+
+```go 
+func singleNumber(nums []int) int {
+    result:=0
+    for _,num:=range nums{
+        //逐个异或，相同为0，相异为1
+        result^=num
+    }
+    return result
+}
+```
