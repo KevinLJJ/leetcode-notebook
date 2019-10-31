@@ -187,3 +187,170 @@ func singleNumber(nums []int) int {
     return result
 }
 ```
+
+## 1. 两数之和
+
+[题目地址](https://leetcode-cn.com/problems/two-sum)
+
+给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
+
+你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
+
+示例:
+```
+给定 nums = [2, 7, 11, 15], target = 9
+因为 nums[0] + nums[1] = 2 + 7 = 9
+所以返回 [0, 1]
+```
+
+思路：暴力穷举，如果两数之和等于输入`target`，则返回所在下标。
+```go
+func twoSum(nums []int, target int) []int {
+    for i:=0;i<len(nums);i++{
+        for j:=0;j<len(nums);j++{
+            if i!=j{
+                if nums[i]+nums[j]==target{
+                    result:=[] int {i,j}
+                    return result
+                }
+            }
+        }
+    }
+    res:=[] int {}
+    return res
+}
+```
+## 283. 移动零
+
+**给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。**
+
+示例:
+```
+输入: [0,1,0,3,12]
+输出: [1,3,12,0,0]
+```
+说明:
+
+必须在原数组上操作，不能拷贝额外的数组。
+尽量减少操作次数。
+
+**思路**：
+设置快慢指针，快指针遍历数组，如果遇到非零元素，则将慢指针+1，然后将快指针的值给慢指针。当快指针到数组尾的时候，慢指针后面的元素都可以给0。
+
+```go
+func moveZeroes(nums []int)  {
+    slow:=0
+    for fast:=0;fast<len(nums);fast++{
+        if nums[fast]!=0{
+            nums[slow]=nums[fast]
+            slow+=1
+        }
+    }
+    for i:=slow;i<len(nums);i++{
+        nums[i]=0
+    }
+}
+```
+
+## 189. 旋转数组
+
+给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
+
+示例 1:
+```
+输入: [1,2,3,4,5,6,7] 和 k = 3
+输出: [5,6,7,1,2,3,4]
+解释:
+向右旋转 1 步: [7,1,2,3,4,5,6]
+向右旋转 2 步: [6,7,1,2,3,4,5]
+向右旋转 3 步: [5,6,7,1,2,3,4]
+```
+
+示例 2:
+```
+输入: [-1,-100,3,99] 和 k = 2
+输出: [3,99,-1,-100]
+解释: 
+向右旋转 1 步: [99,-1,-100,3]
+向右旋转 2 步: [3,99,-1,-100]
+```
+说明:
+
+尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。
+要求使用空间复杂度为 O(1) 的 原地 算法。
+
+思路：
+- 先逆序后k个元素，然后逆序前n-k个元素，然后对整体n个元素进行逆序。即为所求。
+
+```go
+func rotate(nums []int, k int)  {
+    k=k%len(nums)//解决当K大于数组长度的情况
+    reverse(nums[len(nums)-k:len(nums)])//将后k个元素逆序
+    reverse(nums[:len(nums)-k])//将前n-k个元素逆序 
+    reverse(nums[:len(nums)])//将整个数组逆序
+}
+//逆序传入的数组
+func reverse(nums []int){
+    left,right:=0,len(nums)-1//双指针，分别指向首尾元素
+    for left<right{//当两个指针没有重合的时候
+        nums[left],nums[right]=nums[right],nums[left]//替换两个元素所指向的位置
+        //更新两个指针
+        left++
+        right--
+    }
+}
+```
+
+## 48. 旋转图像
+
+[题目地址](https://leetcode-cn.com/problems/rotate-image)
+
+**给定一个 n × n 的二维矩阵表示一个图像。将图像顺时针旋转 90 度。**
+
+说明：
+
+你必须在原地旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要使用另一个矩阵来旋转图像。
+
+示例 1:
+```
+给定 matrix = 
+[
+  [1,2,3],
+  [4,5,6],
+  [7,8,9]
+],
+
+原地旋转输入矩阵，使其变为:
+[
+  [7,4,1],
+  [8,5,2],
+  [9,6,3]
+]
+```
+示例 2:
+```
+给定 matrix =
+[
+  [ 5, 1, 9,11],
+  [ 2, 4, 8,10],
+  [13, 3, 6, 7],
+  [15,14,12,16]
+], 
+
+原地旋转输入矩阵，使其变为:
+[
+  [15,13, 2, 5],
+  [14, 3, 4, 1],
+  [12, 6, 8, 9],
+  [16, 7,10,11]
+]
+```
+题解：
+```python
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        matrix[:] = map(list,zip(*matrix[::-1]))
+```
